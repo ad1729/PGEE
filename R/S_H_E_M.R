@@ -1,5 +1,5 @@
 S_H_E_M <-
-function(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,eps=10^-6) {
+function(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,pindex,eps=10^-6) {
 
 aindex=cumsum(nt)
 index=c(0,aindex[-length(aindex)])
@@ -8,7 +8,15 @@ eta=X%*%beta_new
 mu=family$linkinv(eta)
 
 #This is E on Wang et al.(2012)
-E<-diag(q_scad(abs(as.vector(beta_new)),lambda)/(abs(as.vector(beta_new))+eps))
+E1<-diag(q_scad(abs(as.vector(beta_new)),lambda)/(abs(as.vector(beta_new))+eps))
+
+if(is.null(pindex)==TRUE) {
+E<-E1 
+} else 
+if(is.null(pindex)!=TRUE) {
+E1[,pindex]<-0
+E<-E1
+}
 
 sum201<-matrix(0,(K+1),1)      #gradient:S
 sum301<-matrix(0,(K+1),(K+1))  #naive variance:H

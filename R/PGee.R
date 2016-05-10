@@ -1,7 +1,7 @@
 PGee <-
 function(formula,id,data,na.action=NULL,family=gaussian(link="identity"),
 corstr="independence",Mv=NULL,beta_int=NULL,R=NULL,scale.fix=FALSE,
-scale.value=1,lambda,eps=10^-6,maxiter=25,tol=10^-3,silent=FALSE)  {
+scale.value=1,lambda,pindex=NULL,eps=10^-6,maxiter=30,tol=10^-3,silent=FALSE)  {
 
 call <- match.call()
 m <- match.call(expand.dots = FALSE)
@@ -9,7 +9,7 @@ m <- match.call(expand.dots = FALSE)
 m$beta_int <- m$family <- m$link <- m$varfun<-
 m$corstr <- m$Mv<- m$R <-
 m$scale.fix <- m$scale.value <-
-m$lambda <-m$eps<-
+m$lambda <-m$eps<-m$pindex<-
 m$maxiter <- m$tol <-m$silent <- NULL
 
 if(is.null(m$id)) m$id<-as.name("id")
@@ -58,6 +58,8 @@ if(!(is.double(nobs)))   nobs <- as.double(nobs)
 
 if(missing(lambda)) stop("A value is not assiged for lambda!")
 
+if(missing(pindex)) pindex=NULL
+
 if(missing(family)) family=gaussian(link="identity")
 
 if(missing(corstr)) corstr="independence"
@@ -96,7 +98,7 @@ scale.value<-as.integer(scale.value)
 if(missing(eps)) eps=10^-6
 eps<-as.double(eps)
 
-if(missing(maxiter)) maxiter<-25
+if(missing(maxiter)) maxiter<-30
 maxiter<-as.integer(maxiter)
 
 if(missing(tol))  tol=10^-3
@@ -142,7 +144,7 @@ if (!is.null(beta_int))
         mm$R <- mm$beta_int <- mm$tol <- mm$maxiter <- mm$link <- 
         mm$varfun <-mm$corstr <- mm$Mv <- mm$silent <-mm$scale.fix <- 
         mm$scale.value <- mm$id<-
-        mm$lambda <-mm$eps<-NULL
+        mm$lambda <-mm$pindex<-mm$eps<-NULL
         mm[[1]]<-as.name("glm")
         beta <- eval(mm, parent.frame())$coef
 ### </tsl>
@@ -158,7 +160,7 @@ R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R=R,scale.fix=sca
 Rhat=R.fi.hat$Ehat
 fihat=R.fi.hat$fi
 
-S.H.E.val=S_H_E_M(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,eps)
+S.H.E.val=S_H_E_M(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,pindex,eps)
 S<-S.H.E.val$S
 H<-S.H.E.val$H
 E<-S.H.E.val$E
@@ -176,7 +178,7 @@ R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R,scale.fix,scale
 Rhat=R.fi.hat$Ehat
 fihat=R.fi.hat$fi
 
-S.H.E.M.val=S_H_E_M(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,eps)
+S.H.E.M.val=S_H_E_M(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,pindex,eps)
 S<-S.H.E.M.val$S
 H<-S.H.E.M.val$H
 E<-S.H.E.M.val$E
@@ -198,7 +200,7 @@ final_diff=diff
 fit <- list()
 attr(fit, "class") <- c("PGee","gee","glm")
 fit$title <- "PGEE: PENALIZED GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.0"
+fit$version <- "Version: 1.1"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",

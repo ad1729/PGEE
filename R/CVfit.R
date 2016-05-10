@@ -1,5 +1,5 @@
 CVfit <-
-function(formula,id,data,family,fold,lambda.vec,eps,maxiter,tol) {
+function(formula,id,data,family,scale.fix, scale.value,fold,lambda.vec,pindex,eps,maxiter,tol) {
 
 matchedCall <- match.call()
 matchedCall[[1]] <- as.name("CVfit")
@@ -14,6 +14,9 @@ X<-model.matrix(formula,data)
 if (is.character(family)) family <- get(family)
 if (is.function(family))  family <- family()
 
+if(missing(pindex)) pindex=NULL
+if(missing(scale.fix))   scale.fix=FALSE
+if(missing(scale.value)) scale.value=1
 if(missing(eps)) eps=10^-6
 if(missing(maxiter)) maxiter=30
 if(missing(tol)) tol=10^-3
@@ -54,11 +57,12 @@ mm$na.action<-"na.omit"
 mm$family<-family
 mm$corstr<-"independence"
 mm$Mv<-NULL
-mm$beta_int<-NULL  ##rep(0,(K+1))
+mm$beta_int<-rep(0,(K+1))  ##NULL##
 mm$R<-NULL
-mm$scale.fix<-FALSE
-mm$scale.value<-1
+mm$scale.fix<-scale.fix
+mm$scale.value<-scale.value
 mm$lambda<-lam.temp
+mm$pindex<-pindex
 mm$eps<-eps
 mm$maxiter<-maxiter
 mm$tol<-tol

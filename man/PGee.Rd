@@ -14,7 +14,8 @@
 \usage{
 PGee(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
 corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE, 
-scale.value = 1, lambda, eps = 10^-6, maxiter = 25, tol = 10^-3, silent = FALSE)
+scale.value = 1, lambda, pindex = NULL,eps = 10^-6, maxiter = 30, tol = 10^-3, 
+silent = FALSE)
 }
 
 \arguments{
@@ -39,6 +40,8 @@ size containing the user specified correlation. Otherwise, the default value is 
 The default value is \code{FALSE}.}
 \item{lambda}{A numerical value for the penalization parameter of the scad function, which is estimated via 
 cross-validation.}
+\item{pindex}{An index vector showing the parameters which are not subject to penalization. The default value
+ is \code{NULL}. However, in case of a model with intercept, the intercept parameter should be never penalized.}
 \item{eps}{A numerical value for the epsilon used in minorization-maximization algorithm. The default value is 
 \code{10^-6}.}
 \item{scale.value}{If \code{scale.fix=TRUE}, this assignes a numeric value to which the scale parameter should be 
@@ -115,7 +118,7 @@ lambda.vec=seq(0.1,1,0.1)
 
 \dontrun{
 cv=CVfit(formula=formula,id=data[,1],data=data,family=family,
-fold=fold,lambda.vec=lambda.vec,eps=10^-6,maxiter=30,tol=10^-3)
+fold=fold,lambda.vec=lambda.vec, pindex = NULL, eps=10^-6,maxiter=30,tol=10^-3)
 
 names(cv)
 cv$lam.opt
@@ -128,7 +131,7 @@ lambda=0.1 #this value obtained through CVfit
 myfit1=PGee(formula=formula, id=data[,1], data=data, na.action = NULL, 
 family = gaussian(link = "identity"),corstr = "exchangeable", Mv = NULL, 
 beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = FALSE, 
-scale.value = 1, lambda=lambda, eps = 10^-6, maxiter = 30, 
+scale.value = 1, lambda=lambda, pindex = NULL, eps = 10^-6, maxiter = 30, 
 tol = 10^-3, silent = FALSE)
 
 summary(myfit1)
