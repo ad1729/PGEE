@@ -190,7 +190,7 @@ final_diff=diff
 fit <- list()
 attr(fit, "class") <- c("MGee","gee","glm")
 fit$title <- "MGEE: GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.0"
+fit$version <- "Version: 1.2"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",

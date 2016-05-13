@@ -101,12 +101,11 @@ SIGMA<-sigma2*R
 error<-rmvnorm(n, mean=rep(0,m),SIGMA)
 
 #generate longitudinal data with continuous outcomes
-y.temp<-x.mat%*%matrix(beta.true, ncol=1)
-y.vect<-y.temp+as.vector(t(error))   
+y.temp<-x.mat\%*\%beta.true
+y.vect<-y.temp+as.vector(t(error))
 
 mydata<-data.frame(id.vect,y.vect,x.mat) 
 colnames(mydata)=c("id","y",paste("x",1:length(beta.true),sep=""))
-
 
 ###Input Arguments for Cvfit fitting###
 formula1=as.formula(paste("y~",paste(paste("x",1:length(beta.true),sep=""),collapse="+")))

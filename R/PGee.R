@@ -200,7 +200,7 @@ final_diff=diff
 fit <- list()
 attr(fit, "class") <- c("PGee","gee","glm")
 fit$title <- "PGEE: PENALIZED GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.1"
+fit$version <- "Version: 1.2"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",
