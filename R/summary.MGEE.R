@@ -1,4 +1,4 @@
-summary.MGee <-
+summary.MGEE <-summary.MGee <-
 function(object, correlation = TRUE, ...)
 {
     coef <- object$coefficients
@@ -47,6 +47,6 @@ function(object, correlation = TRUE, ...)
         ##	outer(sqrt(diag(nai.var)),sqrt(diag(nai.var)))
         ##	dimnames(summary$naive.correlation) <- list(object$xnames,object$xnames)
     }
-    attr(summary,"class") <- "summary.MGee"
+    attr(summary,"class") <- "summary.MGEE"
     summary
 }

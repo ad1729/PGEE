@@ -1,4 +1,4 @@
-summary.PGee <-
+summary.PGEE <- summary.PGee <-
 function(object, correlation = TRUE, ...)
 {
     coef <- object$coefficients
@@ -48,6 +48,6 @@ function(object, correlation = TRUE, ...)
         ##	outer(sqrt(diag(nai.var)),sqrt(diag(nai.var)))
         ##	dimnames(summary$naive.correlation) <- list(object$xnames,object$xnames)
     }
-    attr(summary,"class") <- "summary.PGee"
+    attr(summary,"class") <- "summary.PGEE"
     summary
 }

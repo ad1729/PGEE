@@ -1,7 +1,11 @@
-\name{MGee}
+\name{MGEE}
+\alias{MGEE}
 \alias{MGee}
 \alias{mycor_gee1}
 \alias{S_H_M}
+\alias{print.MGEE}
+\alias{print.summary.MGEE}
+\alias{summary.MGEE}
 \alias{print.MGee}
 \alias{print.summary.MGee}
 \alias{summary.MGee}
@@ -11,7 +15,7 @@
 \description{This function fits a generalized estimating equation model to longitudinal data.}
 
 \usage{
-MGee(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
+MGEE(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
 corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE, 
 scale.value = 1, maxiter = 25, tol = 10^-3, silent = FALSE)
 }
@@ -22,11 +26,11 @@ scale.value = 1, maxiter = 25, tol = 10^-3, silent = FALSE)
 \item{data}{A data frame which stores the variables in \code{formula} with \code{id} variable.}
 \item{na.action}{A function to remove missing values from the data. Only \code{na.omit} is allowed here.}
 \item{family}{A \code{family} object: a list of functions and expressions for defining \code{link} and 
-\code{variance} functions. Families supported in \code{MGee} are \code{binomial}, \code{gaussian}, \code{gamma} and 
+\code{variance} functions. Families supported in \code{MGEE} are \code{binomial}, \code{gaussian}, \code{gamma} and 
 \code{poisson}. The \code{links}, which are not available in \code{gee}, is not available here. The default family 
 is \code{gaussian}.} 
 \item{corstr}{A character string, which specifies the type of correlation structure. 
-Structures supported in \code{MGee} are \code{"AR-1"},\code{"exchangeable"}, \code{"fixed"}, \code{"independence"},
+Structures supported in \code{MGEE} are \code{"AR-1"},\code{"exchangeable"}, \code{"fixed"}, \code{"independence"},
 \code{"stat_M_dep"},\code{"non_stat_M_dep"}, and \code{"unstructured"}. The default \code{corstr} type is 
 \code{"independence"}.} 
 \item{Mv}{If either \code{"stat_M_dep"}, or \code{"non_stat_M_dep"} is specified in \code{corstr}, then this assigns 
@@ -43,7 +47,7 @@ The default value is \code{FALSE}.}
 printed. The default value is \code{FALSE}.}
 }
 
-\value{An object class of \code{MGee} representing the fit.}
+\value{An object class of \code{MGEE} representing the fit.}
 
 \references{
 
@@ -65,6 +69,6 @@ The structures \code{"non_stat_M_dep"} and \code{"unstructured"} are valid only 
 }
 
 \seealso{
-\code{\link{PGee}}
+\code{\link{PGEE}}
 }
 

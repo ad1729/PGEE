@@ -1,4 +1,4 @@
-print.summary.PGee <-
+print.summary.PGEE <-print.summary.PGee <-
 function(x, digits = NULL, quote = FALSE, prefix = "", ... )
 {
     if(is.null(digits))

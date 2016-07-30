@@ -1,4 +1,4 @@
-MGee <-
+MGEE<- MGee <-
 function(formula,id,data,na.action=NULL,family=gaussian(link="identity"),
 corstr="independence",Mv=NULL,beta_int=NULL,R=NULL,scale.fix=FALSE,
 scale.value=1,maxiter=25,tol=10^-3,silent=FALSE)  {
@@ -188,9 +188,9 @@ final_iter=iter
 final_diff=diff
 
 fit <- list()
-attr(fit, "class") <- c("MGee","gee","glm")
+attr(fit, "class") <- c("MGEE","gee","glm","coef","residuals","fitted.values")
 fit$title <- "MGEE: GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.2"
+fit$version <- "Version: 1.3"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",

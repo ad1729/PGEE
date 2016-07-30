@@ -7,13 +7,22 @@ importFrom("stats","as.formula","contrasts",
 "nobs","quantile")
 importFrom("stats", "model.frame", "model.response")
 
+S3method(print,MGEE)
+S3method(print,summary.MGEE)
+S3method(summary,MGEE)
+
 S3method(print,MGee)
 S3method(print,summary.MGee)
 S3method(summary,MGee)
 
+S3method(print,PGEE)
+S3method(print,summary.PGEE)
+S3method(summary,PGEE)
+
 S3method(print,PGee)
 S3method(print,summary.PGee)
 S3method(summary,PGee)
+
 
 S3method(print,CVfit)
 

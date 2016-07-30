@@ -1,4 +1,4 @@
-print.MGee <-
+print.PGEE <-print.PGee <-
 function(x, digits = NULL, quote = FALSE, prefix = "", ...)
 {
     if(is.null(digits)) digits <- options()$digits else options(digits =
@@ -7,7 +7,7 @@ function(x, digits = NULL, quote = FALSE, prefix = "", ...)
     cat("\n", x$version, "\n")
     cat("\nModel:\n")
     cat(" Link:                     ", x$model$link, "\n")
-    cat(" Variance to Mean Relation:", x$model$varfun, "\n")
+    cat(" Variance to Mean Relation:",x$model$varfun,"\n")
     if(!is.null(x$model$M))
         cat(" Correlation Structure:    ", x$model$corstr, ", M =", x$
             model$M, "\n")
@@ -31,6 +31,7 @@ function(x, digits = NULL, quote = FALSE, prefix = "", ...)
     else cat("\n\nCoefficients:\n")
     print(x$coefficients, digits = digits)
     cat("\nEstimated Scale Parameter: ", format(round(x$scale, digits)))
+    cat("\nLambda value: ", format(round(x$lambda.value, digits)))
     cat("\nNumber of Iterations: ", x$iterations)
     cat("\n\nWorking Correlation[1:4,1:4]\n")
     print(x$working.correlation[1:4, 1:4], digits = digits)

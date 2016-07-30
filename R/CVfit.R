@@ -1,15 +1,20 @@
 CVfit <-
-function(formula,id,data,family,scale.fix, scale.value,fold,lambda.vec,pindex,eps,maxiter,tol) {
+function(formula,id,data,family,scale.fix,scale.value,fold,lambda.vec,pindex,eps,maxiter,tol) {
 
 matchedCall <- match.call()
 matchedCall[[1]] <- as.name("CVfit")
 
 mf<-model.frame(formula,data)
-y<-model.response(mf,"numeric")
-X<-model.matrix(formula,data)
-#mf$family<-family
-#m$link <- family$link
-#m$varfun<-family$varfun
+#y<-model.response(mf,"numeric")
+#X<-model.matrix(formula,mf)
+##mf$family<-family
+##m$link <- family$link
+##m$varfun<-family$varfun
+
+mf <- eval(mf, parent.frame())
+Terms <- attr(mf, "terms")
+y <- model.extract(mf, "response")
+X<- model.matrix(Terms, mf, contrasts)
 
 if (is.character(family)) family <- get(family)
 if (is.function(family))  family <- family()
@@ -50,7 +55,7 @@ id.train<-id[-index.cv]
 #compute beta.train
 data.train=data.frame("id"=id.train,"y"=y.train,x.train)
 mm<-match.call(expand.dots = FALSE)
-mm$formula<-formula
+##mm$formula<-formula
 mm$id<-id.train
 mm$data<-data.train
 mm$na.action<-"na.omit"
@@ -72,7 +77,7 @@ mm$fold<-NULL
 #mm$link <- NULL
 #mm$varfun<NULL
 
-mm[[1]]<-as.name("PGee")
+mm[[1]]<-as.name("PGEE")
 
 beta.train <- eval(mm, parent.frame())$coefficients
 

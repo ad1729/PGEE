@@ -1,8 +1,12 @@
-\name{PGee}
+\name{PGEE}
+\alias{PGEE}
 \alias{PGee}
 \alias{mycor_gee2}
 \alias{q_scad}
 \alias{S_H_E_M}
+\alias{print.PGEE}
+\alias{print.summary.PGEE}
+\alias{summary.PGEE}
 \alias{print.PGee}
 \alias{print.summary.PGee}
 \alias{summary.PGee}
@@ -12,7 +16,7 @@
 \description{This function fits a penalized generalized estimating equation model to longitudinal data.}
 
 \usage{
-PGee(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
+PGEE(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
 corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE, 
 scale.value = 1, lambda, pindex = NULL,eps = 10^-6, maxiter = 30, tol = 10^-3, 
 silent = FALSE)
@@ -24,11 +28,11 @@ silent = FALSE)
 \item{data}{A data frame which stores the variables in \code{formula} with \code{id} variable.}
 \item{na.action}{A function to remove missing values from the data. Only \code{na.omit} is allowed here.}
 \item{family}{A \code{family} object: a list of functions and expressions for defining \code{link} and 
-\code{variance} functions. Families supported in \code{PGee} are \code{binomial}, \code{gaussian}, \code{gamma} and 
+\code{variance} functions. Families supported in \code{PGEE} are \code{binomial}, \code{gaussian}, \code{gamma} and 
 \code{poisson}. The \code{links}, which are not available in \code{gee}, is not available here. The default family 
 is \code{gaussian}.} 
 \item{corstr}{A character string, which specifies the type of correlation structure. 
-Structures supported in \code{PGee} are \code{"AR-1"},\code{"exchangeable"}, \code{"fixed"}, \code{"independence"},
+Structures supported in \code{PGEE} are \code{"AR-1"},\code{"exchangeable"}, \code{"fixed"}, \code{"independence"},
 \code{"stat_M_dep"},\code{"non_stat_M_dep"}, and \code{"unstructured"}. The default \code{corstr} type is 
 \code{"independence"}.} 
 \item{Mv}{If either \code{"stat_M_dep"}, or \code{"non_stat_M_dep"} is specified in \code{corstr}, then this 
@@ -52,15 +56,15 @@ fixed.}
 printed. The default value is \code{FALSE}.}
 }
 
-\value{An object class of \code{PGee} representing the fit.}
+\value{An object class of \code{PGEE} representing the fit.}
 
 \references{
 Wang, L., Zhou, J., and Qu, A. (2012). Penalized generalized estimating equations 
-for high-dimensional longitudinal data anaysis. \emph{Biometrics}, \bold{68}, 353--360.
+for high-dimensional longitudinal data analysis. \emph{Biometrics}, \bold{68}, 353--360.
 }
 
 \seealso{
-\code{\link{CVfit}}, \code{\link{MGee}}
+\code{\link{CVfit}}, \code{\link{MGEE}}
 }
 
 \examples{
@@ -108,15 +112,14 @@ mydata<-data.frame(id.vect,y.vect,x.mat)
 colnames(mydata)=c("id","y",paste("x",1:length(beta.true),sep=""))
 
 ###Input Arguments for Cvfit fitting###
-formula1=as.formula(paste("y~",paste(paste("x",1:length(beta.true),sep=""),collapse="+")))
-formula<-update(formula1,~.-1)
+formula="y~.-id-1"
 data=mydata
 family<-gaussian(link="identity")
 fold=4
 lambda.vec=seq(0.1,1,0.1)
 
 \dontrun{
-cv=CVfit(formula=formula,id=data[,1],data=data,family=family,
+cv=CVfit(formula="y~.-id-1",id=data[,1],data=data,family=family,
 fold=fold,lambda.vec=lambda.vec, pindex = NULL, eps=10^-6,maxiter=30,tol=10^-3)
 
 names(cv)
@@ -127,7 +130,7 @@ lambda=0.1 #this value obtained through CVfit
 
 #analyze the data through penalized generalized estimating equations
 
-myfit1=PGee(formula=formula, id=data[,1], data=data, na.action = NULL, 
+myfit1=PGEE(formula=formula, id=data[,1], data=data, na.action = NULL, 
 family = gaussian(link = "identity"),corstr = "exchangeable", Mv = NULL, 
 beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = FALSE, 
 scale.value = 1, lambda=lambda, pindex = NULL, eps = 10^-6, maxiter = 30, 
@@ -137,7 +140,7 @@ summary(myfit1)
 
 #analyze the data through unpenalized generalized estimating equations
 
-myfit2=MGee(formula=formula, id=data[,1], data=data, na.action = NULL, 
+myfit2=MGEE(formula=formula, id=data[,1], data=data, na.action = NULL, 
 family = gaussian(link = "identity"),corstr = "exchangeable", Mv = NULL, 
 beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = FALSE, 
 scale.value = 1, maxiter = 30, tol = 10^-3, silent = FALSE)

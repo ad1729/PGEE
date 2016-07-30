@@ -1,4 +1,4 @@
-print.summary.MGee <-
+print.summary.MGEE <-print.summary.MGee <-
 function(x, digits = NULL, quote = FALSE, prefix = "", ... )
 {
     if(is.null(digits))

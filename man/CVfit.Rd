@@ -20,7 +20,7 @@ eps, maxiter, tol)}
 The default value is \code{FALSE}.}
 \item{scale.value}{If \code{scale.fix=TRUE}, this assignes a numeric value to which the scale parameter should be 
 fixed.}
-\item{family}{A \code{family} object in \code{\link{PGee}}.}
+\item{family}{A \code{family} object in \code{\link{PGEE}}.}
 \item{fold}{The number of folds used in cross-validation.}
 \item{lambda.vec}{A vector of tuning parameters that will be used in the cross-validation.}
 \item{pindex}{An index vector showing the parameters which are not subject to penalization. The default value
@@ -35,10 +35,10 @@ fixed.}
 
 \references{
 Wang, L., Zhou, J., and Qu, A. (2012). Penalized generalized estimating equations 
-for high-dimensional longitudinal data anaysis. \emph{Biometrics}, \bold{68}, 353--360.
+for high-dimensional longitudinal data analysis. \emph{Biometrics}, \bold{68}, 353--360.
 }
 
 \seealso{
-\code{\link{PGee}}
+\code{\link{PGEE}}
 }
 

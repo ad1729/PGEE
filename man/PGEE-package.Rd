@@ -1,6 +1,6 @@
 \name{PGEE-package}
 \alias{PGEE-package}
-\alias{PGEE}
+%\alias{PGEE}
 \docType{package}
 \title{Penalized Generalized Estimating Equations}
 
@@ -11,9 +11,9 @@ generalized estimating equations.
 
 \details{
 This package consists of three functions. The function
-\code{\link{PGee}} fits penalized generalized estimating equations to the data. But, before that,
+\code{\link{PGEE}} fits penalized generalized estimating equations to the data. But, before that,
 the tuning parameter should be estimated through the function \code{\link{CVfit}}. 
-On the other hand, the function \code{\link{MGee}} fits unpenalized generalized estimating 
+On the other hand, the function \code{\link{MGEE}} fits unpenalized generalized estimating 
 equations to the data.
 }
 
@@ -25,7 +25,7 @@ Maintainer: Gul Inan
 
 \references{
 Wang, L., Zhou, J., and Qu, A. (2012). Penalized generalized estimating equations 
-for high-dimensional longitudinal data anaysis. \emph{Biometrics}, \bold{68}, 353--360.
+for high-dimensional longitudinal data analysis. \emph{Biometrics}, \bold{68}, 353--360.
 }
 
 \keyword{high-dimensional covariates, longitudinal data, marginal models, SCAD-penalty function}
