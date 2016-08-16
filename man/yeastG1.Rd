@@ -37,68 +37,67 @@ for high-dimensional longitudinal data anaysis. \emph{Biometrics}, \bold{68}, 35
 \examples{
 \dontrun{
 library(PGEE)
-#load data
+# load data
 data(yeastG1)
-data=yeastG1
-#get the column names
+data <- yeastG1
+# get the column names
 colnames(data)[1:9]
-#see some portion of yeast G1 data
+# see some portion of yeast G1 data
 head(data,5)[1:9]
 
-#define the input arguments
-formula="y~.-id"
-family=gaussian(link="identity")
-fold=4
-lambda.vec<-seq(0.01,0.2,0.01)
-#find the optimum lambda
-cv=CVfit(formula=formula,id=data[,1],data=data,family=family, scale.fix = TRUE,
-scale.value = 1, fold=fold,lambda.vec=lambda.vec,pindex=c(1,2), eps=10^-6,
-maxiter=30,tol=10^-6)
-#print the results
+# define the input arguments
+formula <- "y ~.-id"
+family <- gaussian(link = "identity")
+lambda.vec <- seq(0.01,0.2,0.01)
+# find the optimum lambda
+cv <- CVfit(formula = formula, id = data[,1], data = data, family = family, scale.fix = TRUE,
+scale.value = 1, fold = 4, lambda.vec = lambda.vec, pindex = c(1,2), eps = 10^-6,
+maxiter = 30, tol = 10^-6)
+# print the results
 print(cv)
 
-#see the returned values by CVfit
+# see the returned values by CVfit
 names(cv)
-#get the optimum lambda
+# get the optimum lambda
 cv$lam.opt
 
 #fit the PGEE model
-myfit1=PGEE(formula=formula, id=data[,1], data=data, na.action = NULL,
-family = gaussian(link = "identity"),corstr = "independence", Mv = NULL,
+myfit1 <- PGEE(formula = formula, id = data[,1], data = data, na.action = NULL,
+family = family, corstr = "independence", Mv = NULL,
 beta_int = c(rep(0,dim(data)[2]-1)), R = NULL, scale.fix = TRUE,
-scale.value = 1, lambda=0.14, pindex = c(1,2),eps = 10^-6, 
-maxiter = 30,tol = 10^-6, silent = FALSE)
+scale.value = 1, lambda = cv$lam.opt, pindex = c(1,2), eps = 10^-6, 
+maxiter = 30, tol = 10^-6, silent = FALSE)
 
-#get the values returned by myfit object
+# get the values returned by myfit object
 names(myfit1)
-#get the values returned by summary(myfit) object
+# get the values returned by summary(myfit) object
 names(summary(myfit1))
-#see a portion of the results returned by summary(myfit1)
-#$coefficients
+# see a portion of the results returned by summary(myfit1)
+# $coefficients
 head(summary(myfit1)$coefficients,7)
 
-#see the variables which have non-zero coefficients
-index1=which(abs(summary(myfit1)$coef[,"Estimate"])>10^-3)
+# see the variables which have non-zero coefficients
+index1 <- which(abs(summary(myfit1)$coef[,"Estimate"]) > 10^-3)
 index1
 
-#see the PGEE summary statistics of these non-zero variables
+# see the PGEE summary statistics of these non-zero variables
 summary(myfit1)$coef[index1,]
 
-#fit the GEE model
-myfit2=MGEE(formula=formula, id=data[,1], data=data, na.action = NULL,
-family = gaussian(link = "identity"),corstr = "independence", Mv = NULL,
+# fit the GEE model
+myfit2 <- MGEE(formula = formula, id = data[,1], data = data, na.action = NULL,
+family = family, corstr = "independence", Mv = NULL,
 beta_int = c(rep(0,dim(data)[2]-1)), R = NULL, scale.fix = TRUE,
 scale.value = 1, maxiter = 30, tol = 10^-6, silent = FALSE)
 
-#get the GEE summary statistics of the variables that turned out to be
+# get the GEE summary statistics of the variables that turned out to be
 #non-zero in PGEE analysis
 summary(myfit2)$coef[index1,]
 
-#see the significantly associated TFs in PGEE analysis
-which(abs(summary(myfit1)$coef[index1,][,"Robust z"])>1.96)
+# see the significantly associated TFs in PGEE analysis
+which(abs(summary(myfit1)$coef[index1,][,"Robust z"]) > 1.96)
 
-#see the significantly associated TFs in both PGEE and GEE analyses
-which(abs(summary(myfit2)$coef[index1,][,"Robust z"])>1.96)
+# see the significantly associated TFs in both PGEE and GEE analyses
+which(abs(summary(myfit2)$coef[index1,][,"Robust z"]) > 1.96)
 
 }
 }

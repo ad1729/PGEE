@@ -13,12 +13,12 @@ CVfit(formula, id, data, family, scale.fix, scale.value, fold, lambda.vec, pinde
 eps, maxiter, tol)}
 
 \arguments{
-\item{formula}{A formula expression in the form of \code{response~predictors}.}
+\item{formula}{A formula expression in the form of \code{response ~ predictors}.}
 \item{id}{A vector for identifying subjects/clusters.}
 \item{data}{A data frame which stores the variables in \code{formula} with \code{id} variable.}
 \item{scale.fix}{A logical variable; if true, the scale parameter is fixed at the value of \code{scale.value}. 
 The default value is \code{FALSE}.}
-\item{scale.value}{If \code{scale.fix=TRUE}, this assignes a numeric value to which the scale parameter should be 
+\item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be 
 fixed.}
 \item{family}{A \code{family} object in \code{\link{PGEE}}.}
 \item{fold}{The number of folds used in cross-validation.}

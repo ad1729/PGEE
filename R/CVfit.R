@@ -1,5 +1,6 @@
 CVfit <-
-function(formula,id,data,family,scale.fix,scale.value,fold,lambda.vec,pindex,eps,maxiter,tol) {
+function(formula, id, data, family, scale.fix, scale.value, fold, 
+lambda.vec, pindex, eps, maxiter, tol) {
 
 matchedCall <- match.call()
 matchedCall[[1]] <- as.name("CVfit")
@@ -28,6 +29,7 @@ if(missing(tol)) tol=10^-3
 
 N<-length(unique(id))
 K<-dim(X)[2]-1
+nx<-dim(X)[2]
 nt<-dim(X)[1]/N
 nt<-rep(nt,N)
 
@@ -49,20 +51,20 @@ index.cv<-((k-1)*nt[1]*(N/fold)+1):(k*nt[1]*(N/fold))
 
 #training part#
 y.train<-y[-index.cv]
-x.train<-X[-index.cv,]
+if (colnames(X)[1]== "(Intercept)") x.train<-X[-index.cv,-1] else x.train<-X[-index.cv,]
 id.train<-id[-index.cv]
        
 #compute beta.train
 data.train=data.frame("id"=id.train,"y"=y.train,x.train)
 mm<-match.call(expand.dots = FALSE)
-##mm$formula<-formula
+mm$formula<-formula
 mm$id<-id.train
 mm$data<-data.train
 mm$na.action<-"na.omit"
 mm$family<-family
 mm$corstr<-"independence"
 mm$Mv<-NULL
-mm$beta_int<-rep(0,(K+1))  ##NULL##
+mm$beta_int<-rep(0,nx)  ##NULL##
 mm$R<-NULL
 mm$scale.fix<-scale.fix
 mm$scale.value<-scale.value

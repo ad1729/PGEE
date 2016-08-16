@@ -4,7 +4,7 @@ import(MASS)
 import(mvtnorm)
 importFrom("stats","as.formula","contrasts",
 "gaussian","model.extract","model.matrix",
-"nobs","quantile")
+"nobs","quantile","coef","residuals","fitted")
 importFrom("stats", "model.frame", "model.response")
 
 S3method(print,MGEE)

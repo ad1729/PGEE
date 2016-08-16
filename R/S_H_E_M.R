@@ -1,5 +1,5 @@
 S_H_E_M <-
-function(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,pindex,eps=10^-6) {
+function(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps=10^-6) {
 
 aindex=cumsum(nt)
 index=c(0,aindex[-length(aindex)])
@@ -18,19 +18,19 @@ E1[,pindex]<-0
 E<-E1
 }
 
-sum201<-matrix(0,(K+1),1)      #gradient:S
-sum301<-matrix(0,(K+1),(K+1))  #naive variance:H
-sum401<-matrix(0,(K+1),(K+1))  #a component for robust variance:M
+sum201<-matrix(0,nx,1)      #gradient:S
+sum301<-matrix(0,nx,nx)     #naive variance:H
+sum401<-matrix(0,nx,nx)     #a component for robust variance:M
 
 for (i in 1:N) {
 ym<-matrix(0,nt[i],1)
-bigD<-matrix(0,nt[i],(K+1))
+bigD<-matrix(0,nt[i],nx)
 bigA<-matrix(0,nt[i],nt[i])
 for (j in 1:nt[i]) {
 #cat("j",j,"\n")
 ym[j]<- y[j+index[i]]-mu[j+index[i]] 
 bigA[j,j]<-family$variance(mu)[j+index[i]]
-for (k in 1:(K+1)) {
+for (k in 1:nx) {
 bigD[j,k]<-family$mu.eta(eta)[j+index[i]]*X[j+index[i],k]
 #cat("i",i,"j",j,"k",k,"\n")
 } # for k

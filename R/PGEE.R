@@ -1,7 +1,8 @@
 PGEE<- PGee <-
-function(formula,id,data,na.action=NULL,family=gaussian(link="identity"),
-corstr="independence",Mv=NULL,beta_int=NULL,R=NULL,scale.fix=FALSE,
-scale.value=1,lambda,pindex=NULL,eps=10^-6,maxiter=30,tol=10^-3,silent=FALSE)  {
+function(formula, id, data, na.action = NULL, family = gaussian(link = "identity"),
+corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE,
+scale.value = 1, lambda, pindex = NULL, eps = 10^-6, maxiter = 30, tol = 10^-3, 
+silent = FALSE)  {
 
 call <- match.call()
 m <- match.call(expand.dots = FALSE)
@@ -25,12 +26,6 @@ Terms <- attr(m, "terms")
 y <- model.extract(m, "response")
 X<- model.matrix(Terms, m, contrasts)
 
-xnames <- dimnames(X)[[2]]
-if(is.null(xnames)) {
-xnames <- paste("x", 0:K, sep = "")
-dimnames(X) <- list(NULL, xnames)
-}
-
 id<-model.extract(m, id)
 
 if(is.null(id)) {
@@ -44,13 +39,24 @@ if(!(is.double(y)))  y <- as.double(y)
 if(!(is.double(id))) id <- as.double(id)
 
 N<-length(unique(id))
-K<-ncol(X)-1
+if (colnames(X)[1]== "(Intercept)") K=dim(X)[2]-1 else K=dim(X)[2]
+nx=ncol(X)
 
 avec <- as.integer(unlist(lapply(split(id, id), "length")))
 maxclsz <-max(avec)
 maxcl <- maxclsz
 nt<-avec
 nobs<-sum(nt)
+
+xnames <- dimnames(X)[[2]]
+if(is.null(xnames) && colnames(X)[1]=="(Intercept)") {
+xnames <- paste("x", 0:K, sep = "")
+dimnames(X) <- list(NULL, xnames)
+} else
+if(is.null(xnames) && colnames(X)[1]!="(Intercept)") {
+xnames <- paste("x", 1:K, sep = "")
+dimnames(X) <- list(NULL, xnames)
+}
 
 if(!(is.double(N)))      N <- as.double(N)
 if(!(is.double(maxcl)))  maxcl <- as.double(maxcl)
@@ -133,7 +139,7 @@ Mv <- as.integer(Mv)
 if (!is.null(beta_int))
     {
         beta <- matrix(beta_int, nrow = 1)
-        if(ncol(beta) != (K+1)) {stop("Dimension of beta != ncol(X)!")}
+        if(ncol(beta) != nx) {stop("Dimension of beta != ncol(X)!")}
         message("user\'s initial regression estimate")
         
     }
@@ -160,7 +166,7 @@ R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R=R,scale.fix=sca
 Rhat=R.fi.hat$Ehat
 fihat=R.fi.hat$fi
 
-S.H.E.val=S_H_E_M(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,pindex,eps)
+S.H.E.val=S_H_E_M(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps)
 S<-S.H.E.val$S
 H<-S.H.E.val$H
 E<-S.H.E.val$E
@@ -178,7 +184,7 @@ R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R,scale.fix,scale
 Rhat=R.fi.hat$Ehat
 fihat=R.fi.hat$fi
 
-S.H.E.M.val=S_H_E_M(N,nt,y,X,K,family,beta_new,Rhat,fihat,lambda,pindex,eps)
+S.H.E.M.val=S_H_E_M(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps)
 S<-S.H.E.M.val$S
 H<-S.H.E.M.val$H
 E<-S.H.E.M.val$E
@@ -198,9 +204,9 @@ final_iter=iter
 final_diff=diff
 
 fit <- list()
-attr(fit, "class") <- c("PGEE","gee","glm","coef","residuals","fitted.values")
+attr(fit, "class") <- c("PGEE","gee","glm")
 fit$title <- "PGEE: PENALIZED GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.3"
+fit$version <- "Version: 1.4"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",

@@ -21,7 +21,7 @@ scale.value = 1, maxiter = 25, tol = 10^-3, silent = FALSE)
 }
 
 \arguments{
-\item{formula}{A formula expression in the form of \code{response~predictors}.}
+\item{formula}{A formula expression in the form of \code{response ~ predictors}.}
 \item{id}{A vector for identifying subjects/clusters.}
 \item{data}{A data frame which stores the variables in \code{formula} with \code{id} variable.}
 \item{na.action}{A function to remove missing values from the data. Only \code{na.omit} is allowed here.}
@@ -36,11 +36,11 @@ Structures supported in \code{MGEE} are \code{"AR-1"},\code{"exchangeable"}, \co
 \item{Mv}{If either \code{"stat_M_dep"}, or \code{"non_stat_M_dep"} is specified in \code{corstr}, then this assigns 
 a numeric value for \code{Mv}. Otherwise, the default value is \code{NULL}.}
 \item{beta_int}{User specified initial values for regression parameters. The default value is \code{NULL}.}
-\item{R}{If \code{corstr="fixed"} is specified, then \code{R} is a square matrix of dimension maximum cluster 
+\item{R}{If \code{corstr = "fixed"} is specified, then \code{R} is a square matrix of dimension maximum cluster 
 size containing the user specified correlation. Otherwise, the default value is \code{NULL}.}
 \item{scale.fix}{A logical variable; if true, the scale parameter is fixed at the value of \code{scale.value}. 
 The default value is \code{FALSE}.}
-\item{scale.value}{If \code{scale.fix=TRUE}, this assignes a numeric value to which the scale parameter should be fixed.}
+\item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be fixed.}
 \item{maxiter}{The number of iterations that is used in the estimation algorithm. The default value is \code{25}.}
 \item{tol}{The tolerance level that is used in the estimation algorithm. The default value is \code{10^-3}.}
 \item{silent}{A logical variable; if true, the regression parameter estimates at each iteration are
