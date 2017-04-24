@@ -1,8 +1,8 @@
 PGEE<- PGee <-
 function(formula, id, data, na.action = NULL, family = gaussian(link = "identity"),
-corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE,
+corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = TRUE,
 scale.value = 1, lambda, pindex = NULL, eps = 10^-6, maxiter = 30, tol = 10^-3, 
-silent = FALSE)  {
+silent = TRUE)  {
 
 call <- match.call()
 m <- match.call(expand.dots = FALSE)
@@ -95,7 +95,7 @@ if(Rr < maxclsz)  {stop("R is not big enough to accommodate some clusters!")} el
 if(Rr > maxclsz)  {stop("R is larger than the maximum cluster!")}
 }
 
-if(missing(scale.fix))  scale.fix=FALSE
+if(missing(scale.fix))  scale.fix <- TRUE
 scale.fix <- as.integer(scale.fix)
 
 if(missing(scale.value)) scale.value=1
@@ -110,7 +110,7 @@ maxiter<-as.integer(maxiter)
 if(missing(tol))  tol=10^-3
 tol=as.double(tol)
 
-if(missing(silent))  silent<-FALSE
+if(missing(silent))  silent <-TRUE
 silent<-as.integer(silent)
 
 if (is.character(family)) family <- get(family)
@@ -138,13 +138,13 @@ Mv <- as.integer(Mv)
 
 if (!is.null(beta_int))
     {
-        beta <- matrix(beta_int, nrow = 1)
-        if(ncol(beta) != nx) {stop("Dimension of beta != ncol(X)!")}
-        message("user\'s initial regression estimate")
+        beta <- matrix(beta_int, ncol = 1)
+        if(nrow(beta) != nx) {stop("Dimension of beta != ncol(X)!")}
+        #message("user\'s initial regression estimate")
         
     }
     else {
-        message("running glm to get initial regression estimate!")
+        #message("running glm to get initial regression estimate!")
 ### <tsl>	beta <- as.numeric(glm(m, family = family)$coef)
         mm <- match.call(expand.dots = FALSE)
         mm$R <- mm$beta_int <- mm$tol <- mm$maxiter <- mm$link <- 
@@ -159,7 +159,6 @@ if (!is.null(beta_int))
 }
 
 beta_int=matrix(beta, ncol = 1)
-
 beta_new<-beta_int
 
 R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R=R,scale.fix=scale.fix,scale.value=scale.fix)
@@ -193,7 +192,7 @@ M<-S.H.E.M.val$M
 diff<-sum(abs(beta_old-beta_new)) 
 
 iter<-iter+1
-if (silent==1) cat("iter",iter,"beta_new",beta_new,"diff",diff,"\n")
+if (silent==0) cat("iter",iter,"beta_new",beta_new,"diff",diff,"\n")
 if (diff <= tol) break
 } #end of while
 
@@ -206,7 +205,7 @@ final_diff=diff
 fit <- list()
 attr(fit, "class") <- c("PGEE","gee","glm")
 fit$title <- "PGEE: PENALIZED GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.4"
+fit$version <- "Version: 1.5"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",

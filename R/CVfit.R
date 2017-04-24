@@ -2,60 +2,64 @@ CVfit <-
 function(formula, id, data, family, scale.fix, scale.value, fold, 
 lambda.vec, pindex, eps, maxiter, tol) {
 
-matchedCall <- match.call()
-matchedCall[[1]] <- as.name("CVfit")
+call_cv <- match.call()
+mf <- match.call(expand.dots=FALSE)
 
-mf<-model.frame(formula,data)
-#y<-model.response(mf,"numeric")
-#X<-model.matrix(formula,mf)
-##mf$family<-family
-##m$link <- family$link
-##m$varfun<-family$varfun
+mf$family <- mf$link <- mf$varfun <-
+mf$scale.fix <- mf$scale.value <-
+mf$fold <- mf$lambda.vec <-mf$pindex <-
+mf$eps <- mf$maxiter <- mf$tol <- NULL
 
+if(is.null(mf$id)) mf$id <- as.name("id")
+
+mf[[1]] <- as.name("model.frame")
 mf <- eval(mf, parent.frame())
 Terms <- attr(mf, "terms")
 y <- model.extract(mf, "response")
-X<- model.matrix(Terms, mf, contrasts)
+X <- model.matrix(Terms, mf, contrasts)
+id <- model.extract(mf, id)
 
-if (is.character(family)) family <- get(family)
-if (is.function(family))  family <- family()
+if(missing(family)) family=gaussian(link="identity")
 
-if(missing(pindex)) pindex=NULL
-if(missing(scale.fix))   scale.fix=FALSE
-if(missing(scale.value)) scale.value=1
-if(missing(eps)) eps=10^-6
-if(missing(maxiter)) maxiter=30
-if(missing(tol)) tol=10^-3
+#if (is.character(family)) family <- get(family)
+#if (is.function(family))  family <- family()
 
-N<-length(unique(id))
-K<-dim(X)[2]-1
-nx<-dim(X)[2]
-nt<-dim(X)[1]/N
-nt<-rep(nt,N)
+if(missing(pindex)) pindex <- NULL
+if(missing(scale.fix))   scale.fix <- TRUE
+if(missing(scale.value)) scale.value <- 1
+if(missing(eps)) eps <- 10^-6
+if(missing(maxiter)) maxiter <- 30
+if(missing(tol)) tol <- 10^-3
+
+N <- length(unique(id))
+K <- dim(X)[2]-1
+nx <- dim(X)[2]
+nt <- dim(X)[1]/N
+nt <- rep(nt,N)
 
 #pay attention to this part  
-lam.min<--1
-cv.min<-Inf
-cv.vect<-NULL
+lam.min <- -1
+cv.min <- Inf
+cv.vect <- NULL
          
 for (j in 1:length(lambda.vec))   {
 #get one of the lambda's
-lam.temp<-lambda.vec[j]
+lam.temp <- lambda.vec[j]
 #initial value for cv.values is 0.
-cv.value<-0
+cv.value <- 0
 
 for (k in 1:fold) {
 
 #select the index that will be omitted.
-index.cv<-((k-1)*nt[1]*(N/fold)+1):(k*nt[1]*(N/fold))
+index.cv <- ((k-1)*nt[1]*(N/fold)+1):(k*nt[1]*(N/fold))
 
 #training part#
-y.train<-y[-index.cv]
-if (colnames(X)[1]== "(Intercept)") x.train<-X[-index.cv,-1] else x.train<-X[-index.cv,]
-id.train<-id[-index.cv]
+y.train <- y[-index.cv]
+if (colnames(X)[1]== "(Intercept)") x.train <- X[-index.cv,-1] else x.train <- X[-index.cv,]
+id.train <- id[-index.cv]
        
 #compute beta.train
-data.train=data.frame("id"=id.train,"y"=y.train,x.train)
+data.train=data.frame("id"=id.train,"y"=y.train, x.train)
 mm<-match.call(expand.dots = FALSE)
 mm$formula<-formula
 mm$id<-id.train
@@ -73,7 +77,7 @@ mm$pindex<-pindex
 mm$eps<-eps
 mm$maxiter<-maxiter
 mm$tol<-tol
-mm$silent<-FALSE
+mm$silent<-TRUE
 mm$lambda.vec<-NULL
 mm$fold<-NULL
 #mm$link <- NULL
@@ -110,6 +114,6 @@ out$lam.vect=lambda.vec
 out$cv.vect=cv.vect
 out$lam.opt=lam.min
 out$cv.min=cv.min
-out$call <- matchedCall
+out$call <- call_cv
 out   
 }

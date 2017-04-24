@@ -16,8 +16,8 @@
 
 \usage{
 MGEE(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
-corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE, 
-scale.value = 1, maxiter = 25, tol = 10^-3, silent = FALSE)
+corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = TRUE, 
+scale.value = 1, maxiter = 25, tol = 10^-3, silent = TRUE)
 }
 
 \arguments{
@@ -39,12 +39,13 @@ a numeric value for \code{Mv}. Otherwise, the default value is \code{NULL}.}
 \item{R}{If \code{corstr = "fixed"} is specified, then \code{R} is a square matrix of dimension maximum cluster 
 size containing the user specified correlation. Otherwise, the default value is \code{NULL}.}
 \item{scale.fix}{A logical variable; if true, the scale parameter is fixed at the value of \code{scale.value}. 
-The default value is \code{FALSE}.}
-\item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be fixed.}
+The default value is \code{TRUE}.}
+\item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be fixed. 
+                   The default value is 1.}
 \item{maxiter}{The number of iterations that is used in the estimation algorithm. The default value is \code{25}.}
 \item{tol}{The tolerance level that is used in the estimation algorithm. The default value is \code{10^-3}.}
-\item{silent}{A logical variable; if true, the regression parameter estimates at each iteration are
-printed. The default value is \code{FALSE}.}
+\item{silent}{A logical variable; if false, the regression parameter estimates at each iteration are
+printed. The default value is \code{TRUE}.}
 }
 
 \value{An object class of \code{MGEE} representing the fit.}

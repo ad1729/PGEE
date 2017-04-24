@@ -1,7 +1,7 @@
 MGEE<- MGee <-
 function(formula, id, data, na.action = NULL, family = gaussian(link = "identity"),
-corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE,
-scale.value = 1, maxiter = 25, tol = 10^-3, silent = FALSE)  {
+corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = TRUE,
+scale.value = 1, maxiter = 25, tol = 10^-3, silent = TRUE)  {
 
 call <- match.call()
 m <- match.call(expand.dots=FALSE)
@@ -23,7 +23,6 @@ m <- eval(m, parent.frame())
 Terms <- attr(m, "terms")
 y <- model.extract(m, "response")
 X<- model.matrix(Terms, m, contrasts)
-
 id<-model.extract(m, id)
 
 if(is.null(id)) {
@@ -89,7 +88,7 @@ if(Rr < maxclsz)  {stop("R is not big enough to accommodate some clusters!")} el
 if(Rr > maxclsz)  {stop("R is larger than the maximum cluster!")}
 }
 
-if(missing(scale.fix))  scale.fix=FALSE
+if(missing(scale.fix))  scale.fix <- TRUE
 scale.fix <- as.integer(scale.fix)
 
 if(missing(scale.value)) scale.value=1
@@ -101,7 +100,7 @@ maxiter<-as.integer(maxiter)
 if(missing(tol))  tol=10^-3
 tol=as.double(tol)
 
-if(missing(silent))  silent<-FALSE
+if(missing(silent))  silent<- TRUE
 silent<-as.integer(silent)
 
 if (is.character(family)) family <- get(family)
@@ -129,13 +128,13 @@ Mv <- as.integer(Mv)
 
 if (!is.null(beta_int))
     {
-        beta <- matrix(beta_int, nrow = 1)
-        if(ncol(beta) != nx) {stop("Dimension of beta != ncol(X)!")}
-        message("user\'s initial regression estimate")
+        beta <- matrix(beta_int, ncol = 1)
+        if(nrow(beta) != nx) {stop("Dimension of beta != ncol(X)!")}
+        #message("user\'s initial regression estimate")
         
     }
     else {
-        message("running glm to get initial regression estimate!")
+        #message("running glm to get initial regression estimate!")
 ### <tsl>	beta <- as.numeric(glm(m, family = family)$coef)
         mm <- match.call(expand.dots = FALSE)
         mm$R <- mm$beta_int <- mm$tol <- mm$maxiter <- mm$link <- 
@@ -181,7 +180,7 @@ M<-S.H.E.M.val$M
 diff<-sum(abs(beta_old-beta_new)) 
 
 iter<-iter+1
-if (silent==1) cat("iter",iter,"beta_new",beta_new,"diff",diff,"\n")
+if (silent==0) cat("iter",iter,"beta_new",beta_new,"diff",diff,"\n")
 if (diff <= tol) break
 } #end of while
 
@@ -194,7 +193,7 @@ final_diff=diff
 fit <- list()
 attr(fit, "class") <- c("MGEE","gee","glm")
 fit$title <- "MGEE: GENERALIZED ESTIMATING EQUATIONS FOR LONGITUDINAL DATA"
-fit$version <- "Version: 1.4"
+fit$version <- "Version: 1.5"
 links <- c("Identity", "Logarithm", "Logit", "Reciprocal", "Probit","Cloglog")
 varfuns <- c("Gaussian", "Poisson", "Binomial", "Gamma")
 corstrs <- c("Independent", "Fixed", "Stationary M-dependent",

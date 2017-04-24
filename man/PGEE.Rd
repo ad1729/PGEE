@@ -17,9 +17,9 @@
 
 \usage{
 PGEE(formula, id, data, na.action = NULL, family = gaussian(link = "identity"), 
-corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = FALSE, 
+corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = TRUE, 
 scale.value = 1, lambda, pindex = NULL, eps = 10^-6, maxiter = 30, tol = 10^-3, 
-silent = FALSE)
+silent = TRUE)
 }
 
 \arguments{
@@ -41,19 +41,19 @@ assigns a numeric value for \code{Mv}. Otherwise, the default value is \code{NUL
 \item{R}{If \code{corstr = "fixed"} is specified, then \code{R} is a square matrix of dimension maximum cluster 
 size containing the user specified correlation. Otherwise, the default value is \code{NULL}.}
 \item{scale.fix}{A logical variable; if true, the scale parameter is fixed at the value of \code{scale.value}. 
-The default value is \code{FALSE}.}
+The default value is \code{TRUE}.}
+\item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be 
+fixed. The default value is 1.}
 \item{lambda}{A numerical value for the penalization parameter of the scad function, which is estimated via 
 cross-validation.}
 \item{pindex}{An index vector showing the parameters which are not subject to penalization. The default value
  is \code{NULL}. However, in case of a model with intercept, the intercept parameter should be never penalized.}
 \item{eps}{A numerical value for the epsilon used in minorization-maximization algorithm. The default value is 
 \code{10^-6}.}
-\item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be 
-fixed.}
 \item{maxiter}{The number of iterations that is used in the estimation algorithm. The default value is \code{25}.}
 \item{tol}{The tolerance level that is used in the estimation algorithm. The default value is \code{10^-3}.}
-\item{silent}{A logical variable; if true, the regression parameter estimates at each iteration are
-printed. The default value is \code{FALSE}.}
+\item{silent}{A logical variable; if false, the regression parameter estimates at each iteration are
+printed. The default value is \code{TRUE}.}
 }
 
 \value{An object class of \code{PGEE} representing the fit.}
@@ -119,7 +119,7 @@ family <- gaussian(link = "identity")
 lambda.vec <- seq(0.1,1,0.1)
 
 \dontrun{
-cv <- CVfit(formula = formula, id = data[,1], data = data, family = family,
+cv <- CVfit(formula = formula, id = id, data = data, family = family,
 fold = 4, lambda.vec = lambda.vec, pindex = NULL, eps = 10^-6, maxiter = 30, 
 tol = 10^-3)
 
@@ -131,20 +131,20 @@ lambda <- 0.1 #this value obtained through CVfit
 
 # analyze the data through penalized generalized estimating equations
 
-myfit1 <- PGEE(formula = formula, id = data[,1], data = data, na.action = NULL, 
+myfit1 <- PGEE(formula = formula, id = id, data = data, na.action = NULL, 
 family = family, corstr = "exchangeable", Mv = NULL, 
-beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = FALSE, 
+beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = TRUE, 
 scale.value = 1, lambda = lambda, pindex = NULL, eps = 10^-6, maxiter = 30, 
-tol = 10^-3, silent = FALSE)
+tol = 10^-3, silent = TRUE)
 
 summary(myfit1)
 
 # analyze the data through unpenalized generalized estimating equations
 
-myfit2 <- MGEE(formula = formula, id = data[,1], data = data, na.action = NULL, 
+myfit2 <- MGEE(formula = formula, id = id, data = data, na.action = NULL, 
 family = family, corstr = "exchangeable", Mv = NULL, 
-beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = FALSE, 
-scale.value = 1, maxiter = 30, tol = 10^-3, silent = FALSE)
+beta_int = c(rep(0,length(beta.true))), R = NULL, scale.fix = TRUE, 
+scale.value = 1, maxiter = 30, tol = 10^-3, silent = TRUE)
 
 summary(myfit2)
 }

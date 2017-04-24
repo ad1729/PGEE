@@ -17,9 +17,9 @@ eps, maxiter, tol)}
 \item{id}{A vector for identifying subjects/clusters.}
 \item{data}{A data frame which stores the variables in \code{formula} with \code{id} variable.}
 \item{scale.fix}{A logical variable; if true, the scale parameter is fixed at the value of \code{scale.value}. 
-The default value is \code{FALSE}.}
+The default value is \code{TRUE}.}
 \item{scale.value}{If \code{scale.fix = TRUE}, this assignes a numeric value to which the scale parameter should be 
-fixed.}
+fixed. The default value is 1.}
 \item{family}{A \code{family} object in \code{\link{PGEE}}.}
 \item{fold}{The number of folds used in cross-validation.}
 \item{lambda.vec}{A vector of tuning parameters that will be used in the cross-validation.}
