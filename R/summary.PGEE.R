@@ -37,6 +37,7 @@ function(object, correlation = TRUE, ...)
     summary$lambda.value <-object$lambda.value
     summary$error <- paste("Error code was", object$error)
     summary$working.correlation <- object$working.correlation
+    summary$penalty_type <- object$penalty_type
     summary$iterations <- object$iterations
     if ( correlation ) {
         ##	rob.var <- object$robust.variance

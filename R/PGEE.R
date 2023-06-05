@@ -13,7 +13,7 @@ m$beta_int <- m$family <- m$link <- m$varfun<-
 m$corstr <- m$Mv<- m$R <-
 m$scale.fix <- m$scale.value <-
 m$lambda <-m$eps<-m$pindex<-
-m$maxiter <- m$tol <-m$silent <- NULL
+m$maxiter <- m$tol <-m$silent <- m$penalty_type <- NULL
 
 if(is.null(m$id)) m$id<-as.name("id")
 
@@ -152,7 +152,7 @@ if (!is.null(beta_int))
         mm$R <- mm$beta_int <- mm$tol <- mm$maxiter <- mm$link <- 
         mm$varfun <-mm$corstr <- mm$Mv <- mm$silent <-mm$scale.fix <- 
         mm$scale.value <- mm$id<-
-        mm$lambda <-mm$pindex<-mm$eps<-NULL
+        mm$lambda <-mm$pindex<-mm$eps<- mm$penalty_type <- NULL
         mm[[1]]<-as.name("glm")
         beta <- eval(mm, parent.frame())$coef
 ### </tsl>
@@ -247,6 +247,7 @@ fit$robust.variance <- rv
 fit$naive.variance <- nv
 fit$xnames <- xnames
 fit$error <- final_diff
+fit$penalty_type <- penalty_type
 dimnames(fit$robust.variance) <- list(xnames, xnames)
 dimnames(fit$naive.variance) <- list(xnames, xnames)
 fit

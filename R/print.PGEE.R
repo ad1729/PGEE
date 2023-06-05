@@ -12,6 +12,7 @@ function(x, digits = NULL, quote = FALSE, prefix = "", ...)
         cat(" Correlation Structure:    ", x$model$corstr, ", M =", x$
             model$M, "\n")
     else cat(" Correlation Structure:    ", x$model$corstr, "\n")
+    cat(" Penalty Function:         ", x$penalty_type, "\n")
     cat("\nCall:\n")
     dput(x$call)                        #       cat("\nTerms:\n")
 ###        ys <- matrix(rep(as.matrix(x$id, ncol = 1), 5), ncol = 5)
