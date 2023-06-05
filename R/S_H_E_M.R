@@ -1,5 +1,5 @@
 S_H_E_M <-
-function(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps=10^-6) {
+function(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps=10^-6, penalty_type) {
 
 aindex=cumsum(nt)
 index=c(0,aindex[-length(aindex)])
@@ -7,8 +7,13 @@ index=c(0,aindex[-length(aindex)])
 eta=X%*%beta_new
 mu=family$linkinv(eta)
 
+penalty_function <- switch(penalty_type,
+  "SCAD" = q_scad, 
+  "ridge" = q_ridge
+)
+
 #This is E on Wang et al.(2012)
-E1<-diag(q_scad(abs(as.vector(beta_new)),lambda)/(abs(as.vector(beta_new))+eps))
+E1<-diag(penalty_function(as.vector(beta_new),lambda)/(abs(as.vector(beta_new))+eps))
 
 if(is.null(pindex)==TRUE) {
 E<-E1 

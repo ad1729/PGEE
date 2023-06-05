@@ -2,8 +2,10 @@ PGEE<- PGee <-
 function(formula, id, data, na.action = NULL, family = gaussian(link = "identity"),
 corstr = "independence", Mv = NULL, beta_int = NULL, R = NULL, scale.fix = TRUE,
 scale.value = 1, lambda, pindex = NULL, eps = 10^-6, maxiter = 30, tol = 10^-3, 
-silent = TRUE)  {
+silent = TRUE, penalty_type = "SCAD")  {
 
+stopifnot(penalty_type %in% c("SCAD", "ridge"))
+  
 call <- match.call()
 m <- match.call(expand.dots = FALSE)
 
@@ -165,7 +167,7 @@ R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R=R,scale.fix=sca
 Rhat=R.fi.hat$Ehat
 fihat=R.fi.hat$fi
 
-S.H.E.val=S_H_E_M(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps)
+S.H.E.val=S_H_E_M(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps, penalty_type)
 S<-S.H.E.val$S
 H<-S.H.E.val$H
 E<-S.H.E.val$E
@@ -183,7 +185,7 @@ R.fi.hat=mycor_gee2(N,nt,y,X,family,beta_new,corstr,Mv,maxclsz,R,scale.fix,scale
 Rhat=R.fi.hat$Ehat
 fihat=R.fi.hat$fi
 
-S.H.E.M.val=S_H_E_M(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps)
+S.H.E.M.val=S_H_E_M(N,nt,y,X,nx,family,beta_new,Rhat,fihat,lambda,pindex,eps, penalty_type)
 S<-S.H.E.M.val$S
 H<-S.H.E.M.val$H
 E<-S.H.E.M.val$E
