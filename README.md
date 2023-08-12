@@ -39,10 +39,11 @@ dat <- dplyr::tibble(
   dplyr::mutate(exposure = factor(exposure, levels = c(0, 1))) %>% 
   dplyr::arrange(id)
 
+# pindex = c(1, 2) indicates that the intercept and exposure terms should not be penalized
 mod <- PGEE(
   response ~ exposure + splines2::bSpline(time, knots = seq(-2, 10, 1)),
   data = dat, family = "binomial", corstr = "exchangeable", id = id, 
-  lambda = 0.001, scale.fix = FALSE, pindex = c(1, 2), silent = FALSE, 
+  lambda = 0.001, scale.fix = TRUE, pindex = c(1, 2), silent = FALSE, 
   penalty_type = "ridge"
 )
 
